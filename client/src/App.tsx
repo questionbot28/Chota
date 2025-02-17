@@ -10,19 +10,22 @@ import { useState, useEffect, useCallback } from "react";
 
 // Use hash-based routing for static deployments
 const useHashLocation = (): BaseLocationHook => {
-  const [loc, setLoc] = useState(window.location.hash.slice(1) || "/");
+  const [loc, setLoc] = useState(() => window.location.hash.replace(/^#/, "") || "/");
 
   useEffect(() => {
     const handler = () => {
-      const hash = window.location.hash.slice(1) || "/";
+      const hash = window.location.hash.replace(/^#/, "") || "/";
       setLoc(hash);
     };
 
     window.addEventListener("hashchange", handler);
-    if (!window.location.hash) window.location.hash = "/";
+    // Ensure we have a hash on initial load
+    if (!window.location.hash) {
+      window.location.hash = loc;
+    }
 
     return () => window.removeEventListener("hashchange", handler);
-  }, []);
+  }, [loc]);
 
   const navigate = useCallback((to: string) => {
     window.location.hash = to;
