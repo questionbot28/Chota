@@ -2,3 +2,11 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[build]
+  command = "vite build"
+  publish = "dist/public"
+
+[build.environment]
+  NODE_ENV = "production"
+  NODE_VERSION = "20"

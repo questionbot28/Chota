@@ -1,4 +1,4 @@
-import { Switch, Route, Router, type BaseLocationHook } from "wouter";
+import { Switch, Route, Router } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,7 +9,7 @@ import Status from "@/pages/Status";
 import { useState, useEffect, useCallback } from "react";
 
 // Use hash-based routing for static deployments
-const useHashLocation = (): BaseLocationHook => {
+const useHashLocation = () => {
   const [loc, setLoc] = useState(() => window.location.hash.replace(/^#/, "") || "/");
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const useHashLocation = (): BaseLocationHook => {
     window.location.hash = to;
   }, []);
 
-  return [loc, navigate];
+  return [loc, navigate] as const;
 };
 
 function RouterContent() {
